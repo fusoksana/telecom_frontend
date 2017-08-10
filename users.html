@@ -10,15 +10,34 @@
 </head>
 <body>
 <div class="container">
-<h2>Users:</h2>
+    <h2>Users:</h2>
+
     <p></p>
+
+
+        <button type="button" class="btn btn-success btn-md">Add</button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Import<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">csv</a></li>
+                <li><a href="#">xml</a></li>
+            </ul>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Export<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">csv</a></li>
+                <li><a href="#">xml</a></li>
+            </ul>
+        </div>
+
     <table class="table table-bordered">
         <thead>
         <tr>
             <th>ID</th>
             <th>Firstname</th>
             <th>Lastname</th>
-            <th>Email</th>
+            <th>Operations</th>
 
         </tr>
         </thead>
@@ -27,30 +46,44 @@
             <td>28</td>
             <td>Yuriy</td>
             <td>Vasko</td>
-            <td>vaskoyura@gmail.com</td>
+            <td>
+                <button type="button" class="btn btn-warning btn-md">Edit</button>
+                <button type="button" class="btn btn-danger btn-md">Delete</button>
+            </td>
 
         </tr>
         <tr>
             <td>22</td>
             <td>Oksana</td>
             <td>Vasko</td>
-            <td>fusoksana@gmail.com</td>
+            <td>
+                <button type="button" class="btn btn-warning btn-md">Edit</button>
+                <button type="button" class="btn btn-danger btn-md">Delete</button>
+            </td>
 
         </tr>
         <tr>
             <td>32</td>
             <td>Olena</td>
             <td>Dooley</td>
-            <td>olens@gmail.com</td>
+            <td>
+                <button type="button" class="btn btn-warning btn-md">Edit</button>
+                <button type="button" class="btn btn-danger btn-md">Delete</button>
+            </td>
         </tr>
         <tr>
             <td>8</td>
             <td>Mykola</td>
             <td>Palydovych</td>
-            <td>palyd@gmail.com</td>
+            <td>
+                <button type="button" class=" btn btn-warning btn-md">Edit</button>
+                <button type="button" class="btn btn-danger btn-md">Delete</button>
+            </td>
         </tr>
         </tbody>
     </table>
+
+
 </div>
 </body>
 </html>
