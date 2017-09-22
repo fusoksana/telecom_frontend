@@ -8,12 +8,54 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+        function myFunction2(){
+            var ID=$("#ID").val();
+            var firstName=$("#firstName").val();
+            var lastName=$("#lastName").val();
+//            $.post("http://localhost:8080/telecom_backend-1/UsersServletAnother",
+//                    {
+//                        ID:ID,
+//                        firstName:firstName,
+//                        lastName:lastName
+//
+//                    },
+//                    function(data,status){
+//                        alert("Data: " + data + "\nStatus: " + status);
+//                    });
+
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother",
+                data: {
+                       "ID":ID,
+                        "firstName":firstName,
+                        "lastName":lastName
+
+                    },
+
+                success: function(data,status){ console.log(data+status)},
+                dataType: 'application/json'
+            });
+            location.reload();
+
+//+
+            console.log(ID,firstName,lastName);
+        }
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+        });
+
         $(document).ready(function(){
             $.get("http://localhost:8080/telecom_backend-1/UsersServletAnother", function(data, status){
 
                 $.each(data, function(i, item) {
-                   var id =item.id.toString();
-                    $('#myTable tr:last').after('<tr> <td>'+item.id+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md">Edit</button> <button type="button" class="btn btn-danger btn-md">Delete</button> </td> </tr>');
+                    var iI=123;
+                    // $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> </td> </tr>');
+                    $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction2()" >Delete</button> </td> </tr>');
+
                 });
 
 
@@ -33,6 +75,23 @@
                 });
 
         });
+        function myFunction(ID) {
+            $.ajax({
+                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother/"+ID,
+                type: 'DELETE',
+                success: function(result) {
+                   console.log(result)
+                }
+            });
+            location.reload();
+        }
+
+
+
+
+
+
+
     </script>
 </head>
 <body>
@@ -42,7 +101,37 @@
     <p></p>
 
 
-        <button type="button" class="btn btn-primary btn-md">Add</button>
+        <button type="button" class="btn btn-primary btn-md"  id="myBtn">Add</button>
+         <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header" style="padding:35px 50px;">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4> Add User</h4>
+                  </div>
+                  <div class="modal-body" style="padding:40px 50px;">
+                      <form role="form">
+                          <div class="form-group">
+                              <label for="ID">ID</label>
+                              <input type="text" class="form-control" id="ID" placeholder="ID">
+
+                          </div>
+                          <div class="form-group">
+                              <label for="firstName">firstName</label>
+                              <input type="text" class="form-control" id="firstName" placeholder="firstName">
+                          </div>
+                          <div class="form-group">
+                              <label for="lastName">lastName</label>
+                              <input type="text" class="form-control" id="lastName" placeholder="lastName">
+                          </div>
+
+                          <button type="submit" class="btn btn-success btn-block" onclick="myFunction2()"> Add User</button>
+                      </form>
+                  </div>
+
+              </div>
+              </div>
+             </div>
 
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Import<span class="caret"></span></button>
