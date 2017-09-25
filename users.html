@@ -24,20 +24,44 @@
 //                    });
 
 
+
             $.ajax({
-                type: "POST",
-                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother",
-                data: {
+                type:    "POST",
+                url:     "http://localhost:8080/telecom_backend-1/UsersServletAnother",
+                data:  {
                        "ID":ID,
                         "firstName":firstName,
                         "lastName":lastName
 
-                    },
-
-                success: function(data,status){ console.log(data+status)},
-                dataType: 'application/json'
+                    }
+                ,
+                success: function(data) {
+                    if (data.status=="false") {
+                        alert('User with this ID  is already exist');
+                    }
+                    //if(data.status=="true"){
+                      //  alert("User added");
+                  //  }
+                },
+                // vvv---- This is the new bit
+                error:   function(jqXHR, textStatus, errorThrown) {
+                    alert("Error, status = " + textStatus + ", " +
+                            "error thrown: " + errorThrown
+                    );
+                }
             });
-            location.reload();
+
+//            $.post(
+//                // type: "POST",
+//                 "http://localhost:8080/telecom_backend-1/UsersServletAnother",
+//
+//                function (data, status, sss) {
+//                    alert('Herer')
+////                    console.log(data);
+//                },
+//                'json'
+//             );
+            // location.reload();
 
 //+
             console.log(ID,firstName,lastName);
@@ -54,7 +78,7 @@
                 $.each(data, function(i, item) {
                     var iI=123;
                     // $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> </td> </tr>');
-                    $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction2()" >Delete</button> </td> </tr>');
+                    $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> </td> </tr>');
 
                 });
 
@@ -125,7 +149,7 @@
                               <input type="text" class="form-control" id="lastName" placeholder="lastName">
                           </div>
 
-                          <button type="submit" class="btn btn-success btn-block" onclick="myFunction2()"> Add User</button>
+                          <button type="button" class="btn btn-success btn-block" onclick="myFunction2()"> Add User</button>
                       </form>
                   </div>
 
