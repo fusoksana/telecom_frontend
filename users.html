@@ -38,10 +38,12 @@
                 success: function(data) {
                     if (data.status=="false") {
                         alert('User with this ID  is already exist');
+
                     }
                     //if(data.status=="true"){
                       //  alert("User added");
                   //  }
+                  location.reload();
                 },
                 // vvv---- This is the new bit
                 error:   function(jqXHR, textStatus, errorThrown) {
