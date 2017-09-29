@@ -12,19 +12,6 @@
             var ID=$("#ID").val();
             var firstName=$("#firstName").val();
             var lastName=$("#lastName").val();
-//            $.post("http://localhost:8080/telecom_backend-1/UsersServletAnother",
-//                    {
-//                        ID:ID,
-//                        firstName:firstName,
-//                        lastName:lastName
-//
-//                    },
-//                    function(data,status){
-//                        alert("Data: " + data + "\nStatus: " + status);
-//                    });
-
-
-
             $.ajax({
                 type:    "POST",
                 url:     "http://localhost:8080/telecom_backend-1/UsersServletAnother",
@@ -40,9 +27,7 @@
                         alert('User with this ID  is already exist');
 
                     }
-                    //if(data.status=="true"){
-                      //  alert("User added");
-                  //  }
+
                   location.reload();
                 },
                 // vvv---- This is the new bit
@@ -53,17 +38,40 @@
                 }
             });
 
-//            $.post(
-//                // type: "POST",
-//                 "http://localhost:8080/telecom_backend-1/UsersServletAnother",
-//
-//                function (data, status, sss) {
-//                    alert('Herer')
-////                    console.log(data);
-//                },
-//                'json'
-//             );
-            // location.reload();
+
+//+
+            console.log(ID,firstName,lastName);
+        }
+        function editUSERToDB(){
+            var ID=$("#IDEdit").val();
+            var firstName=$("#firstNameEdit").val();
+            var lastName=$("#lastNameEdit").val();
+            $.ajax({
+                type:    "POST",
+                url:     "http://localhost:8080/telecom_backend-1/UserServlet",
+                data:  {
+                    "ID":ID,
+                    "firstName":firstName,
+                    "lastName":lastName
+
+                }
+                ,
+                success: function(data) {
+                    if (data.status=="false") {
+                        alert('User with this ID  is already exist');
+
+                    }
+
+                    location.reload();
+                },
+                // vvv---- This is the new bit
+                error:   function(jqXHR, textStatus, errorThrown) {
+                    alert("Error, status = " + textStatus + ", " +
+                            "error thrown: " + errorThrown
+                    );
+                }
+            });
+
 
 //+
             console.log(ID,firstName,lastName);
@@ -79,24 +87,15 @@
 
                 $.each(data, function(i, item) {
                     var iI=123;
-                    // $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> </td> </tr>');
-                    $('#myTable tr:last').after('<tr> <td>'+item.ID+'</td> <td>'+item.firstName+'</td> <td>'+item.lastName+'</td> <td> <button type="button" class="btn btn-warning btn-md" >Edit</button> <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> </td> </tr>');
+                    var insertData='<tr> <td>'+item.ID+'</td> ' +
+                            '<td>'+item.firstName+'</td> ' +
+                            '<td>'+item.lastName+'</td> ' +
+                            '<td> <button type="button" class="btn btn-warning btn-md"  id="myBtnEdit" onclick="editUser('+item.ID+')" >Edit</button>' +
+                            ' <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> ' +
+                            '</td> </tr>';
+                    $('#myTable tr:last').after(insertData);
 
                 });
-
-
-//                var $users_options = $("#data");
-//
-//                $.each(data, function(users) {
-//
-//                    $users_options.append(
-//                            $("<option />").val(users.key).text(users.key + " " + users.value)
-//
-//
-//                    );
-//                    alert("Data: " + users.value + "\nStatus: " + status)
-//                });
-
 
                 });
 
@@ -111,8 +110,22 @@
             });
             location.reload();
         }
+        function editUser(ID) {
+            $("#myModalEdit").modal();
+            $.get("http://localhost:8080/telecom_backend-1/UserServlet/"+ID, function (data, status) {
+               // alert("Data: " + data + "\nStatus: " + status);
+                console.log(data);
+                var iDEdit=data.ID;
+                var firstNameEdit=data.firstName;
+                var lastNameEdit=data.lastName;
+                document.getElementById("IDEdit").value = iDEdit;
+                document.getElementById("firstNameEdit").value = firstNameEdit;
+                document.getElementById("lastNameEdit").value = lastNameEdit;
 
 
+
+            });
+        }
 
 
 
@@ -158,6 +171,36 @@
               </div>
               </div>
              </div>
+    <div class="modal fade" id="myModalEdit" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4> Edit User</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="ID" id="IDUserEdit">ID</label>
+                            <input type="text" class="form-control" id="IDEdit" placeholder="ID">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName" id="firstNameUserEdit">firstName</label>
+                            <input type="text" class="form-control" id="firstNameEdit" placeholder="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" id="lastNameUserEdit">lastName</label>
+                            <input type="text" class="form-control" id="lastNameEdit"  placeholder="lastName">
+                        </div>
+
+                        <button type="button" class="btn btn-success btn-block" onclick="editUSERToDB()"> Save changes</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Import<span class="caret"></span></button>
