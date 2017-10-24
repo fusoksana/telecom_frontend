@@ -8,56 +8,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        function myFunction2(){
-            var ID=$("#ID").val();
-            var firstName=$("#firstName").val();
-            var lastName=$("#lastName").val();
+        function myFunction2() {
+            var ID = $("#ID").val();
+            var firstName = $("#firstName").val();
+            var lastName = $("#lastName").val();
             $.ajax({
-                type:    "POST",
-                url:     "http://localhost:8080/telecom_backend-1/UsersServletAnother",
-                data:  {
-                       "ID":ID,
-                        "firstName":firstName,
-                        "lastName":lastName
-
-                    }
-                ,
-                success: function(data) {
-                    if (data.status=="false") {
-                        alert('User with this ID  is already exist');
-
-                    }
-
-                  location.reload();
-                },
-                // vvv---- This is the new bit
-                error:   function(jqXHR, textStatus, errorThrown) {
-                    alert("Error, status = " + textStatus + ", " +
-                            "error thrown: " + errorThrown
-                    );
-                }
-            });
-
-
-//+
-            console.log(ID,firstName,lastName);
-        }
-        function editUSERToDB(){
-            var ID=$("#IDEdit").val();
-            var firstName=$("#firstNameEdit").val();
-            var lastName=$("#lastNameEdit").val();
-            $.ajax({
-                type:    "POST",
-                url:     "http://localhost:8080/telecom_backend-1/UserServlet",
-                data:  {
-                    "ID":ID,
-                    "firstName":firstName,
-                    "lastName":lastName
+                type: "POST",
+                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother",
+                data: {
+                    "ID": ID,
+                    "firstName": firstName,
+                    "lastName": lastName
 
                 }
                 ,
-                success: function(data) {
-                    if (data.status=="false") {
+                success: function (data) {
+                    if (data.status == "false") {
                         alert('User with this ID  is already exist');
 
                     }
@@ -65,7 +31,7 @@
                     location.reload();
                 },
                 // vvv---- This is the new bit
-                error:   function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     alert("Error, status = " + textStatus + ", " +
                             "error thrown: " + errorThrown
                     );
@@ -74,61 +40,100 @@
 
 
 //+
-            console.log(ID,firstName,lastName);
+            console.log(ID, firstName, lastName);
         }
-        $(document).ready(function(){
-            $("#myBtn").click(function(){
+        function editUSERToDB() {
+            var ID = $("#IDEdit").val();
+            var firstName = $("#firstNameEdit").val();
+            var lastName = $("#lastNameEdit").val();
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/telecom_backend-1/UserServlet",
+                data: {
+                    "ID": ID,
+                    "firstName": firstName,
+                    "lastName": lastName
+
+                }
+                ,
+                success: function (data) {
+                    if (data.status == "false") {
+                        alert('User with this ID  is already exist');
+
+                    }
+
+                    location.reload();
+                },
+                // vvv---- This is the new bit
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error, status = " + textStatus + ", " +
+                            "error thrown: " + errorThrown
+                    );
+                }
+            });
+
+
+//+
+            console.log(ID, firstName, lastName);
+        }
+        $(document).ready(function () {
+            $("#myBtn").click(function () {
                 $("#myModal").modal();
             });
         });
 
-        $(document).ready(function(){
-            $.get("http://localhost:8080/telecom_backend-1/UsersServletAnother", function(data, status){
+        $(document).ready(function () {
+            $.get("http://localhost:8080/telecom_backend-1/UsersServletAnother", function (data, status) {
 
-                $.each(data, function(i, item) {
-                    var iI=123;
-                    var insertData='<tr> <td>'+item.ID+'</td> ' +
-                            '<td>'+item.firstName+'</td> ' +
-                            '<td>'+item.lastName+'</td> ' +
-                            '<td> <button type="button" class="btn btn-warning btn-md"  id="myBtnEdit" onclick="editUser('+item.ID+')" >Edit</button>' +
-                            ' <button type="button"  class="btn btn-danger btn-md" onclick="myFunction('+item.ID+')" >Delete</button> ' +
+                $.each(data, function (i, item) {
+                    var iI = 123;
+                    var insertData = '<tr> <td>' + item.ID + '</td> ' +
+                            '<td>' + item.firstName + '</td> ' +
+                            '<td>' + item.lastName + '</td> ' +
+                            '<td> <button type="button" class="btn btn-warning btn-md"  id="myBtnEdit" onclick="editUser(' + item.ID + ')" >Edit</button>' +
+                            ' <button type="button"  class="btn btn-danger btn-md" onclick="myFunction(' + item.ID + ')" >Delete</button> ' +
                             '</td> </tr>';
                     $('#myTable tr:last').after(insertData);
 
                 });
 
-                });
+            });
 
         });
+        function exportFile() {
+            window.location.href = 'http://localhost:8080/telecom_backend-1/UsersExport?json';
+        }
+        function exportFileXML() {
+            window.location.href = 'http://localhost:8080/telecom_backend-1/UsersExport?xml';
+        }
+        function exportFileCSV() {
+            window.location.href = 'http://localhost:8080/telecom_backend-1/UsersExport?csv';
+        }
         function myFunction(ID) {
             $.ajax({
-                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother/"+ID,
+                url: "http://localhost:8080/telecom_backend-1/UsersServletAnother/" + ID,
                 type: 'DELETE',
-                success: function(result) {
-                   console.log(result)
+                success: function (result) {
+                    console.log(result)
                 }
             });
             location.reload();
         }
         function editUser(ID) {
             $("#myModalEdit").modal();
-            $.get("http://localhost:8080/telecom_backend-1/UserServlet/"+ID, function (data, status) {
-               // alert("Data: " + data + "\nStatus: " + status);
+            $.get("http://localhost:8080/telecom_backend-1/UserServlet/" + ID, function (data, status) {
+                // alert("Data: " + data + "\nStatus: " + status);
                 console.log(data);
-                var iDEdit=data.ID;
-                var firstNameEdit=data.firstName;
-                var lastNameEdit=data.lastName;
+                var iDEdit = data.ID;
+                var firstNameEdit = data.firstName;
+                var lastNameEdit = data.lastName;
                 document.getElementById("IDEdit").value = iDEdit;
                 document.getElementById("firstNameEdit").value = firstNameEdit;
                 document.getElementById("lastNameEdit").value = lastNameEdit;
 
 
-
             });
         }
-
-
-
 
 
     </script>
@@ -137,40 +142,81 @@
 <div class="container">
     <h2>Users:</h2>
 
-    <p></p>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-md" id="myBtn">Add</button>&nbsp;
 
 
-        <button type="button" class="btn btn-primary btn-md"  id="myBtn">Add</button>
-         <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header" style="padding:35px 50px;">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4> Add User</h4>
-                  </div>
-                  <div class="modal-body" style="padding:40px 50px;">
-                      <form role="form">
-                          <div class="form-group">
-                              <label for="ID">ID</label>
-                              <input type="text" class="form-control" id="ID" placeholder="ID">
+        <div class="dropdown" style="display:inline-block;">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Export
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#"onclick="exportFileXML()">xml1</a></li>
+                <li><a href="#" onclick="exportFile()">json1</a></li>
+                <li><a href="#" onclick="exportFileCSV()">csv</a></li>
+            </ul>
+        </div>
 
-                          </div>
-                          <div class="form-group">
-                              <label for="firstName">firstName</label>
-                              <input type="text" class="form-control" id="firstName" placeholder="firstName">
-                          </div>
-                          <div class="form-group">
-                              <label for="lastName">lastName</label>
-                              <input type="text" class="form-control" id="lastName" placeholder="lastName">
-                          </div>
 
-                          <button type="button" class="btn btn-success btn-block" onclick="myFunction2()"> Add User</button>
-                      </form>
-                  </div>
+        <div class="dropdown" style="display:inline-block;">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Import
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><a href="#">xml</a></li>
+                <li><a href="#">json</a></li>
+            </ul>
+        </div>
 
-              </div>
-              </div>
-             </div>
+
+        <!--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Export <span class="caret"></span></button>-->
+        <!--<ul class="dropdown-menu" role="menu">-->
+            <!--<li><a href="functionexportFileXML()">xml</a></li>-->
+            <!--<li><a href="#" onclick="exportFile()">json</a></li>-->
+        <!--</ul>-->
+        <!--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Import<span class="caret"></span></button>-->
+        <!--<ul class="dropdown-menu" role="menu">-->
+            <!--<li><a href="#">csv1</a></li>-->
+            <!--<li><a href="#">xml</a></li>-->
+        <!--</ul>-->
+    </div>
+    <br>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4> Add User</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="ID">ID</label>
+                            <input type="text" class="form-control" id="ID" placeholder="ID">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">firstName</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">lastName</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="lastName">
+                        </div>
+
+                        <button type="button" class="btn btn-success btn-block" onclick="myFunction2()"> Add User
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <br>
     <div class="modal fade" id="myModalEdit" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -191,10 +237,11 @@
                         </div>
                         <div class="form-group">
                             <label for="lastName" id="lastNameUserEdit">lastName</label>
-                            <input type="text" class="form-control" id="lastNameEdit"  placeholder="lastName">
+                            <input type="text" class="form-control" id="lastNameEdit" placeholder="lastName">
                         </div>
 
-                        <button type="button" class="btn btn-success btn-block" onclick="editUSERToDB()"> Save changes</button>
+                        <button type="button" class="btn btn-success btn-block" onclick="editUSERToDB()"> Save changes
+                        </button>
                     </form>
                 </div>
 
@@ -202,71 +249,58 @@
         </div>
     </div>
 
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Import<span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">csv</a></li>
-                <li><a href="#">xml</a></li>
-            </ul>
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Export<span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">csv</a></li>
-                <li><a href="#">xml</a></li>
-            </ul>
 
+<table id="myTable" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Operations</th>
 
-    <table id="myTable" class="table table-bordered" >
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Operations</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--<tr>-->
+    <!--<td>28</td>-->
+    <!--<td>Yuriy</td>-->
+    <!--<td>Vasko</td>-->
+    <!--<td>-->
+    <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
+    <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
+    <!--</td>-->
 
-        </tr>
-        </thead>
-        <tbody>
-        <!--<tr>-->
-            <!--<td>28</td>-->
-            <!--<td>Yuriy</td>-->
-            <!--<td>Vasko</td>-->
-            <!--<td>-->
-                <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
-                <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
-            <!--</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td>22</td>-->
+    <!--<td>Oksana</td>-->
+    <!--<td>Vasko</td>-->
+    <!--<td>-->
+    <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
+    <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
+    <!--</td>-->
 
-        <!--</tr>-->
-        <!--<tr>-->
-            <!--<td>22</td>-->
-            <!--<td>Oksana</td>-->
-            <!--<td>Vasko</td>-->
-            <!--<td>-->
-                <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
-                <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
-            <!--</td>-->
-
-        <!--</tr>-->
-        <!--<tr>-->
-            <!--<td>32</td>-->
-            <!--<td>Olena</td>-->
-            <!--<td>Dooley</td>-->
-            <!--<td>-->
-                <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
-                <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
-            <!--</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-            <!--<td>8</td>-->
-            <!--<td>Mykola</td>-->
-            <!--<td>Palydovych</td>-->
-            <!--<td>-->
-                <!--<button type="button" class=" btn btn-warning btn-md">Edit</button>-->
-                <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
-            <!--</td>-->
-        <!--</tr>-->
-        </tbody>
-    </table>
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td>32</td>-->
+    <!--<td>Olena</td>-->
+    <!--<td>Dooley</td>-->
+    <!--<td>-->
+    <!--<button type="button" class="btn btn-warning btn-md">Edit</button>-->
+    <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td>8</td>-->
+    <!--<td>Mykola</td>-->
+    <!--<td>Palydovych</td>-->
+    <!--<td>-->
+    <!--<button type="button" class=" btn btn-warning btn-md">Edit</button>-->
+    <!--<button type="button" class="btn btn-danger btn-md">Delete</button>-->
+    <!--</td>-->
+    <!--</tr>-->
+    </tbody>
+</table>
 
 
 </div>
